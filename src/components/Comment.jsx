@@ -1,15 +1,16 @@
 import { ThumbsUp, Trash } from "phosphor-react";
+import { Avatar } from "./Avatar";
 import styles from "./Comment.module.css";
 
 export function Comment() {
     return (
         <div className={styles.comment}>
-            <img className={styles.avatar} src="https://avatars.githubusercontent.com/u/53683786?v=4" alt="" />
+            <Avatar hasBorder={false} src="https://media.licdn.com/dms/image/C4E03AQFkfEWTiK2j2g/profile-displayphoto-shrink_800_800/0/1616686015673?e=1678924800&v=beta&t=cYOvpV8288iwGf3oK01eSsSenX0YXy-mkD8kw9lhjxM" />
             <div className={styles.commentBox}>
                 <div className={styles.commentContent}>
                     <header>
                         <div className={styles.authorAndTime}>
-                            <strong>Conrado Alexsander</strong>
+                            <strong>Jamon</strong>
                             <time title="11 de maio às 08:13" dateTime="2023-01-10 09:20">Cerca de 1h atrás</time>
                         </div>
                         <button title="Deletar comentário">
@@ -17,7 +18,7 @@ export function Comment() {
                         </button>
                     </header>
 
-                    <p>Muito bom Devon, parabéns</p>
+                    <p>Muito bom Conrado, parabéns</p>
                 </div>
                 <footer>
                     <button>
@@ -26,7 +27,6 @@ export function Comment() {
                     </button>
                 </footer>
             </div>
-
         </div>
     )
 }
