@@ -1,30 +1,53 @@
-import { Avatar } from "./Avatar"
-import { Comment } from "./Comment"
-import styles from "./Post.module.css"
-export function Post() {
+import { format, formatDistanceToNow } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+
+import { Avatar } from "./Avatar";
+import { Comment } from "./Comment";
+import styles from "./Post.module.css";
+
+
+
+export function Post({ id, author, content, publishedAt }) {
+
+    const publishedDateFormatted = format(
+        publishedAt,
+        "d 'de' LLLL 'às' HH:mm'h'",
+        {
+            locale: ptBR,
+        },
+    );
+
+    const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+        locale: ptBR,
+        addSuffix: true
+    })
+
     return (
         <article className={styles.post}>
             <header>
                 <div className={styles.author}>
-                    <Avatar src="https://avatars.githubusercontent.com/u/53683786?v=4" />
+                    <Avatar src={author.avatarUrl} />
                     <div className={styles.authorInfo}>
-                        <strong>Conrado</strong>
-                        <span>Web Developer</span>
+                        <strong>{author.name}</strong>
+                        <span>{author.role}</span>
                     </div>
                 </div>
 
-                <time title="11 de maio às 08:13" dateTime="2023-01-10 09:20">Publicado há 1h</time>
+                <time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>{publishedDateRelativeToNow}</time>
             </header>
 
             <div className={styles.content}>
-                <p>Fala pessoal 👋</p>
-                <p>Finalmente finalizei meu novo site/portfólio. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻 </p>
-                <p>Acesse e deixe seu feedback </p>
-                <p>👉{" "}<a href="">devonlane.design</a></p>
-                <p>
-                    <a href="">#uiux </a> {' '}
-                    <a href="">#userexperience</a>{' '}
-                </p>
+                {content.map(item => {
+                    if (item.type === "paragraph") {
+                        return <p>{item.content}</p>
+                    }
+
+                    if (item.type === "link") {
+                        return (<p>
+                            <a href="">{item.content}</a>
+                        </p>);
+                    }
+                })}
             </div>
 
             <form className={styles.commentForm}>
