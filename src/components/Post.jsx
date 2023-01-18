@@ -15,12 +15,9 @@ export function Post({ id, author, content, publishedAt }) {
     const [newCommentText, setNewCommentText] = useState("");
 
     const publishedDateFormatted = format(
-        publishedAt,
-        "d 'de' LLLL 'às' HH:mm'h'",
-        {
-            locale: ptBR,
-        },
-    );
+        publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
+        locale: ptBR,
+    });
 
     const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
         locale: ptBR,
@@ -29,13 +26,18 @@ export function Post({ id, author, content, publishedAt }) {
 
     function handleCreateNewComment() {
         event.preventDefault();
+
         setComments([...comments, newCommentText])
-        event.target.comment.value = "";
         setNewCommentText("");
     }
 
     function handleNewCommentChange() {
         setNewCommentText(event.target.value);
+    }
+
+    function deleteComment(commentToDelete) {
+        const updatedComments = comments.filter(comment => (comment !== commentToDelete));
+        setComments(updatedComments)
     }
 
     return (
@@ -53,15 +55,17 @@ export function Post({ id, author, content, publishedAt }) {
             </header>
 
             <div className={styles.content}>
-                {content.map(item => {
-                    if (item.type === "paragraph") {
-                        return <p>{item.content}</p>
+                {content.map(line => {
+                    if (line.type === "paragraph") {
+                        return <p key={line.content}>{line.content}</p>
                     }
 
-                    if (item.type === "link") {
-                        return (<p>
-                            <a href="">{item.content}</a>
-                        </p>);
+                    if (line.type === "link") {
+                        return (
+                            <p key={line.content}>
+                                <a href="">{line.content}</a>
+                            </p>
+                        );
                     }
                 })}
             </div>
@@ -81,7 +85,12 @@ export function Post({ id, author, content, publishedAt }) {
             </form>
 
             <div className={styles.commentsList}>
-                {comments.map(comment => (<Comment content={comment} />))}
+                {comments.map(comment => (
+                    <Comment
+                        key={comment}
+                        content={comment}
+                        onDeleteComment={deleteComment}
+                    />))}
             </div>
         </article>)
 }
