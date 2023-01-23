@@ -11,7 +11,10 @@ export function Comment({ content, onDeleteComment }) {
     }
 
     function handleLikeComment() {
-        setLikeComment(likeComment + 1);
+        // using previous state to ensure the correct value in update
+        // in React, due to the Closure and the context setState() is executed
+        // you need to be careful to not use the wrong value when you need to rely on the last state
+        setLikeComment((state) => (state + 1));
     }
 
     return (
